@@ -196,7 +196,6 @@
             transform: scale(0.99);
         }
 
-        /* Character Counter & Loader Styling */
         .char-count {
             position: absolute;
             left: 20px;
@@ -219,7 +218,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive Design */
+    
         @media (max-width: 768px) {
             .text-panels {
                 grid-template-columns: 1fr;
@@ -303,7 +302,7 @@
     </div>
 
     <script>
-        // DOM Elements
+      
         const sourceText = document.getElementById('source-text');
         const targetText = document.getElementById('target-text');
         const sourceLang = document.getElementById('source-lang');
@@ -318,12 +317,12 @@
         const speakSourceBtn = document.getElementById('speak-source');
         const speakTargetBtn = document.getElementById('speak-target');
 
-        // Character Counter Update
+        
         sourceText.addEventListener('input', () => {
             charCount.textContent = `${sourceText.value.length} / 2000`;
         });
 
-        // Swap Languages Functionality
+      
         swapBtn.addEventListener('click', () => {
             if (sourceLang.value === 'autodetect') return; // Cannot swap 'Detect Language'
             
@@ -338,7 +337,6 @@
             charCount.textContent = `${sourceText.value.length} / 2000`;
         });
 
-        // Translation Logic via MyMemory API
         async function translate() {
             const text = sourceText.value.trim();
             if (!text) {
@@ -349,12 +347,11 @@
             let sLang = sourceLang.value;
             const tLang = targetLang.value;
 
-            // Handle Autodetect parsing for MyMemory API 
+    
             if (sLang === 'autodetect') {
                 sLang = 'auto';
             }
 
-            // UI Feedback: Loading state
             btnText.textContent = 'Translating...';
             btnLoader.style.display = 'block';
             translateBtn.disabled = true;
@@ -373,7 +370,7 @@
                 console.error("API Error:", error);
                 targetText.value = "Failed to connect to the translation service.";
             } finally {
-                // UI Feedback: Reset state
+             
                 btnText.textContent = 'Translate Text';
                 btnLoader.style.display = 'none';
                 translateBtn.disabled = false;
@@ -382,13 +379,13 @@
 
         translateBtn.addEventListener('click', translate);
 
-        // UX Feature: Copy to Clipboard
+
         copyBtn.addEventListener('click', () => {
             if (!targetText.value) return;
             
             navigator.clipboard.writeText(targetText.value).then(() => {
                 const icon = copyBtn.querySelector('i');
-                // Temporary success state UI check
+              
                 icon.className = 'fa-solid fa-check';
                 copyBtn.style.color = '#10b981'; 
                 setTimeout(() => {
@@ -398,15 +395,14 @@
             });
         });
 
-        // UX Feature: Text-to-Speech (Web Speech API)
         function speak(text, langCode) {
             if (!text || !('speechSynthesis' in window)) return;
             
-            // Cancel current ongoing audio before playing new one
+           
             window.speechSynthesis.cancel();
 
             const utterance = new SpeechSynthesisUtterance(text);
-            // Default back to native auto handling if autodetect is chosen
+            
             utterance.lang = langCode === 'autodetect' ? 'en' : langCode; 
             window.speechSynthesis.speak(utterance);
         }
