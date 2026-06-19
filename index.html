@@ -7,21 +7,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --bg-gradient: radial-gradient(circle at 10% 20%, #1e1b4b 0%, #0f172a 50%, #020617 100%);
+            --card-bg: rgba(17, 24, 39, 0.65);
+            --card-border: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --input-bg: #0f172a;
+            --accent: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --input-bg: #030712;
+            --error-color: #ef4444;
+            --success-color: #10b981;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
@@ -30,125 +32,145 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
             color: var(--text-main);
+            overflow-x: hidden;
         }
 
         .translator-container {
             background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
+            border-radius: 28px;
             width: 100%;
-            max-width: 1000px;
-            padding: 32px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            max-width: 1050px;
+            padding: 44px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
         }
 
         header {
-            margin-bottom: 24px;
+            margin-bottom: 36px;
             text-align: center;
         }
 
         header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, #a5b4fc, #6366f1);
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff 40%, #c7d2fe 90%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         header p {
             color: var(--text-muted);
-            margin-top: 8px;
-            font-size: 0.95rem;
+            margin-top: 10px;
+            font-size: 1rem;
         }
 
         .controls {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 20px;
+            gap: 24px;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
 
         select {
             background-color: var(--input-bg);
             color: var(--text-main);
             border: 1px solid var(--card-border);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            padding: 16px 20px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
             width: 100%;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 16px;
         }
 
         select:focus {
-            border-color: var(--accent);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        select option {
+            background-color: #0f172a;
+            color: var(--text-main);
         }
 
         .swap-icon {
             color: var(--text-muted);
             cursor: pointer;
             font-size: 1.2rem;
-            transition: color 0.2s, transform 0.2s;
-            padding: 8px;
+            transition: all 0.3s ease;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 50%;
+            border: 1px solid var(--card-border);
         }
 
         .swap-icon:hover {
-            color: var(--accent);
+            color: #ffffff;
             transform: rotate(180deg);
+            border-color: #6366f1;
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
         .text-panels {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
+            gap: 28px;
+            margin-bottom: 32px;
         }
 
         .panel {
             position: relative;
             background: var(--input-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
         }
 
         .panel:focus-within {
-            border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
         }
 
         textarea {
             width: 100%;
-            height: 220px;
+            height: 240px;
             background: transparent;
             border: none;
             resize: none;
             outline: none;
-            padding: 20px;
+            padding: 24px;
             color: var(--text-main);
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             line-height: 1.6;
         }
 
         textarea::placeholder {
-            color: #475569;
+            color: #4b5563;
         }
 
         .panel-actions {
             display: flex;
             justify-content: flex-end;
+            align-items: center;
             gap: 12px;
-            padding: 12px 20px;
-            background: rgba(15, 23, 42, 0.6);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 14px 24px;
+            background: rgba(2, 6, 23, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            min-height: 58px;
         }
 
         .action-btn {
@@ -156,10 +178,12 @@
             border: none;
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 1.1rem;
-            padding: 6px;
-            border-radius: 6px;
-            transition: color 0.2s, background-color 0.2s;
+            font-size: 1.15rem;
+            padding: 8px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
         }
 
         .action-btn:hover {
@@ -167,8 +191,15 @@
             background-color: rgba(255, 255, 255, 0.05);
         }
 
-        .action-btn:active {
-            transform: scale(0.95);
+        .copied-badge {
+            font-size: 0.8rem !important;
+            font-weight: 700;
+            color: var(--success-color);
+            background: rgba(16, 185, 129, 0.12);
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-left: 6px;
+            letter-spacing: 0.3px;
         }
 
         .translate-btn {
@@ -176,73 +207,100 @@
             background: var(--accent);
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 18px;
+            border-radius: 18px;
+            font-size: 1.15rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.3s ease;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 4px 20px var(--accent-glow);
         }
 
         .translate-btn:hover {
-            background: var(--accent-hover);
-        }
-
-        .translate-btn:active {
-            transform: scale(0.99);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5);
+            transform: translateY(-1px);
         }
 
         .char-count {
             position: absolute;
-            left: 20px;
-            bottom: 16px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            left: 24px;
+            bottom: 20px;
+            font-size: 0.85rem;
+            color: #4b5563;
+            font-weight: 600;
         }
 
         .loader {
             display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 0.8s linear infinite;
+        }
+
+  
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #111827;
+            border: 1px solid var(--error-color);
+            border-radius: 14px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(239, 68, 68, 0.15);
+            z-index: 9999;
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+            pointer-events: none;
+            max-width: 90vw;
+            width: 420px;
+        }
+
+        .toast-container.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            color: var(--error-color);
+            font-size: 1.3rem;
+        }
+
+        .toast-message {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 500;
+            line-height: 1.4;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-    
         @media (max-width: 768px) {
-            .text-panels {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .controls {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .swap-icon {
-                transform: rotate(90deg);
-                text-align: center;
-                margin: 4px auto;
-            }
-            .swap-icon:hover {
-                transform: rotate(270deg);
-            }
-            .translator-container {
-                padding: 20px;
-            }
+            .text-panels { grid-template-columns: 1fr; gap: 20px; }
+            .controls { grid-template-columns: 1fr; gap: 14px; }
+            .swap-icon { transform: rotate(90deg); margin: 4px auto; }
+            .translator-container { padding: 24px; }
         }
     </style>
 </head>
 <body>
+
+    <div class="toast-container" id="error-toast">
+        <i class="fa-solid fa-circle-exclamation toast-icon"></i>
+        <div class="toast-message">You cannot choose the same language for translation. Please select a different language.</div>
+    </div>
 
     <div class="translator-container">
         <header>
@@ -263,7 +321,7 @@
                 <option value="pt">Portuguese (Português)</option>
             </select>
 
-            <i class="fa-solid deficit fa-arrows-rotate swap-icon" id="swap-languages" title="Swap Languages"></i>
+            <i class="fa-solid fa-arrows-rotate swap-icon" id="swap-languages" title="Swap Languages"></i>
 
             <select id="target-lang">
                 <option value="es" selected>Spanish (Español)</option>
@@ -302,7 +360,6 @@
     </div>
 
     <script>
-      
         const sourceText = document.getElementById('source-text');
         const targetText = document.getElementById('target-text');
         const sourceLang = document.getElementById('source-lang');
@@ -316,15 +373,46 @@
         const copyBtn = document.getElementById('copy-target');
         const speakSourceBtn = document.getElementById('speak-source');
         const speakTargetBtn = document.getElementById('speak-target');
+        const errorToast = document.getElementById('error-toast');
 
-        
+        let previousSourceLang = sourceLang.value;
+        let previousTargetLang = targetLang.value;
+
         sourceText.addEventListener('input', () => {
             charCount.textContent = `${sourceText.value.length} / 2000`;
         });
 
-      
+        function showErrorToast() {
+            errorToast.classList.add('show');
+            setTimeout(() => {
+                errorToast.classList.remove('show');
+            }, 3500);
+        }
+
+        function validateLanguages(changedElement) {
+            if (sourceLang.value === 'autodetect') {
+                previousSourceLang = sourceLang.value;
+                previousTargetLang = targetLang.value;
+                return;
+            }
+            
+            if (sourceLang.value === targetLang.value) {
+                showErrorToast();
+              
+                sourceLang.value = previousSourceLang;
+                targetLang.value = previousTargetLang;
+            } else {
+                
+                previousSourceLang = sourceLang.value;
+                previousTargetLang = targetLang.value;
+            }
+        }
+
+        sourceLang.addEventListener('change', () => validateLanguages(sourceLang));
+        targetLang.addEventListener('change', () => validateLanguages(targetLang));
+
         swapBtn.addEventListener('click', () => {
-            if (sourceLang.value === 'autodetect') return; // Cannot swap 'Detect Language'
+            if (sourceLang.value === 'autodetect') return;
             
             const tempLang = sourceLang.value;
             sourceLang.value = targetLang.value;
@@ -335,6 +423,9 @@
             targetText.value = tempText;
             
             charCount.textContent = `${sourceText.value.length} / 2000`;
+
+            previousSourceLang = sourceLang.value;
+            previousTargetLang = targetLang.value;
         });
 
         async function translate() {
@@ -347,7 +438,6 @@
             let sLang = sourceLang.value;
             const tLang = targetLang.value;
 
-    
             if (sLang === 'autodetect') {
                 sLang = 'auto';
             }
@@ -370,7 +460,6 @@
                 console.error("API Error:", error);
                 targetText.value = "Failed to connect to the translation service.";
             } finally {
-             
                 btnText.textContent = 'Translate Text';
                 btnLoader.style.display = 'none';
                 translateBtn.disabled = false;
@@ -379,18 +468,26 @@
 
         translateBtn.addEventListener('click', translate);
 
-
         copyBtn.addEventListener('click', () => {
             if (!targetText.value) return;
             
             navigator.clipboard.writeText(targetText.value).then(() => {
                 const icon = copyBtn.querySelector('i');
-              
+                
                 icon.className = 'fa-solid fa-check';
-                copyBtn.style.color = '#10b981'; 
+                copyBtn.style.color = 'var(--success-color)'; 
+
+                const label = document.createElement('span');
+                label.id = 'copied-text-badge';
+                label.className = 'copied-badge';
+                label.innerText = 'Copied!';
+                copyBtn.appendChild(label);
+              
                 setTimeout(() => {
                     icon.className = 'fa-solid fa-copy';
                     copyBtn.style.color = '';
+                    const customBadge = document.getElementById('copied-text-badge');
+                    if (customBadge) customBadge.remove();
                 }, 2000);
             });
         });
@@ -398,11 +495,9 @@
         function speak(text, langCode) {
             if (!text || !('speechSynthesis' in window)) return;
             
-           
             window.speechSynthesis.cancel();
 
             const utterance = new SpeechSynthesisUtterance(text);
-            
             utterance.lang = langCode === 'autodetect' ? 'en' : langCode; 
             window.speechSynthesis.speak(utterance);
         }
