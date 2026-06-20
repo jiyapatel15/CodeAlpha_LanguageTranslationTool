@@ -178,7 +178,6 @@
             gap: 12px;
         }
 
-        /* --- Dynamic Word Breakdown Section --- */
         .breakdown-container {
             padding: 0 24px 20px 24px;
             border-top: 1px dashed rgba(255, 255, 255, 0.05);
@@ -311,7 +310,6 @@
             <div class="panel">
                 <textarea id="target-text" placeholder="Translation will appear here..." readonly></textarea>
                 
-                <!-- Word-by-word analysis box -->
                 <div class="breakdown-container" id="breakdown-box">
                     <span class="breakdown-title" id="breakdown-header-title">Word Breakdown Explanation</span>
                     <div class="word-grid" id="word-entry-grid"></div>
@@ -352,13 +350,12 @@
         let previousSourceLang = sourceLang.value;
         let previousTargetLang = targetLang.value;
 
-        // Automatically clean up punctuation and split string into individual words/characters
         function sliceIntoWords(text, lang) {
             if (lang === 'zh' || lang === 'ja') {
-                // Slices logographic Asian languages character-by-character cleanly
+            
                 return text.replace(/[\s.,\/#!$%\^&\*;:{}=\-_`~()?"'，。！？、]/g, "").split("");
             } else {
-                // Splits Western/Latin scripts space-by-space into clean individual words
+            
                 return text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, "").split(/\s+/).filter(w => w.length > 0);
             }
         }
@@ -380,10 +377,8 @@
             breakdownHeaderTitle.textContent = `Word-by-Word Breakdown (${tLang.toUpperCase()})`;
             breakdownBox.style.display = 'block';
 
-            // Process every unique word/character concurrently using Google's open single-lookup gtx endpoint
             for (let word of tokens) {
                 try {
-                    // Requests Translation Meaning (dt=t) AND Pronunciation/Transliteration (dt=rm) at the same time
                     const lookupUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${tLang}&tl=en&dt=t&dt=rm&q=${encodeURIComponent(word)}`;
                     const res = await fetch(lookupUrl);
                     const data = await res.json();
@@ -394,7 +389,6 @@
                     if (data && data[0] && data[0][0]) {
                         meaning = data[0][0][0] || "N/A";
                         
-                        // Grab phonetic string/Pinyin/Romanization data array if it exists
                         if (data[0][0][3]) {
                             reading = data[0][0][3];
                         } else if (data[1] && data[1][0] && data[1][0][1]) {
@@ -402,7 +396,6 @@
                         }
                     }
 
-                    // Create the word card layout
                     const card = document.createElement('div');
                     card.className = 'word-card';
                     card.innerHTML = `
@@ -443,7 +436,6 @@
                     const resultText = data.responseData.translatedText;
                     targetText.value = resultText;
                     
-                    // Trigger global layout breakdown engine
                     await buildGlobalWordBreakdown(resultText, tLang);
                 } else {
                     targetText.value = "Translation error. Please try again.";
