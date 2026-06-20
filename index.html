@@ -350,12 +350,22 @@
         let previousSourceLang = sourceLang.value;
         let previousTargetLang = targetLang.value;
 
+<<<<<<< HEAD
         function sliceIntoWords(text, lang) {
             if (lang === 'zh' || lang === 'ja') {
             
                 return text.replace(/[\s.,\/#!$%\^&\*;:{}=\-_`~()?"'，。！？、]/g, "").split("");
             } else {
             
+=======
+        
+        function sliceIntoWords(text, lang) {
+            if (lang === 'zh' || lang === 'ja') {
+                
+                return text.replace(/[\s.,\/#!$%\^&\*;:{}=\-_`~()?"'，。！？、]/g, "").split("");
+            } else {
+                
+>>>>>>> bd6c383 (Update translator code with breakdown feature)
                 return text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, "").split(/\s+/).filter(w => w.length > 0);
             }
         }
@@ -377,8 +387,15 @@
             breakdownHeaderTitle.textContent = `Word-by-Word Breakdown (${tLang.toUpperCase()})`;
             breakdownBox.style.display = 'block';
 
+<<<<<<< HEAD
             for (let word of tokens) {
                 try {
+=======
+           
+            for (let word of tokens) {
+                try {
+                    
+>>>>>>> bd6c383 (Update translator code with breakdown feature)
                     const lookupUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${tLang}&tl=en&dt=t&dt=rm&q=${encodeURIComponent(word)}`;
                     const res = await fetch(lookupUrl);
                     const data = await res.json();
@@ -389,6 +406,10 @@
                     if (data && data[0] && data[0][0]) {
                         meaning = data[0][0][0] || "N/A";
                         
+<<<<<<< HEAD
+=======
+                     
+>>>>>>> bd6c383 (Update translator code with breakdown feature)
                         if (data[0][0][3]) {
                             reading = data[0][0][3];
                         } else if (data[1] && data[1][0] && data[1][0][1]) {
@@ -396,6 +417,10 @@
                         }
                     }
 
+<<<<<<< HEAD
+=======
+                   
+>>>>>>> bd6c383 (Update translator code with breakdown feature)
                     const card = document.createElement('div');
                     card.className = 'word-card';
                     card.innerHTML = `
@@ -435,7 +460,11 @@
                 if (data.responseData) {
                     const resultText = data.responseData.translatedText;
                     targetText.value = resultText;
+<<<<<<< HEAD
                     
+=======
+                
+>>>>>>> bd6c383 (Update translator code with breakdown feature)
                     await buildGlobalWordBreakdown(resultText, tLang);
                 } else {
                     targetText.value = "Translation error. Please try again.";
